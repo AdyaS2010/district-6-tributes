@@ -21,7 +21,7 @@
             position: relative;
         }
 
-        /* Animated Background */
+        /* background (animations added!) */
         .background {
             position: fixed;
             top: 0;
@@ -157,7 +157,7 @@
             transform: scale(1.1);
         }
 
-        /* Main Content */
+        /* Homepage (main content) */
         .main-content {
             display: flex;
             flex-direction: column;
@@ -318,7 +318,7 @@
             box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
         }
 
-        /* Hidden Easter Eggs */
+        /* "easter eggs!!" */
         .easter-egg {
             position: fixed;
             opacity: 0;
@@ -355,7 +355,7 @@
             z-index: 999;
         }
 
-        /* Responsive */
+        /* responsiveness & nav stuff */
         @media (max-width: 768px) {
             .header {
                 padding: 15px 20px;
@@ -455,14 +455,14 @@
         </div>
     </main>
 
-    <!-- Easter Eggs -->
+    <!-- easter eggs -->
     <div class="easter-egg velocity-indicator" id="velocityEgg">
         <div>Velocity: <span id="velocity">0</span> m/s</div>
         <div>Physics Mode: ACTIVE</div>
     </div>
 
     <script>
-        // Create animated stars
+        // create animated stars
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const starCount = 150;
@@ -478,7 +478,7 @@
             }
         }
 
-        // Easter Egg 1: Velocity Tracker (Physics Concept)
+        // ee 1 -> a sort of velocity tracker (using physics concepts)
         let mouseVelocity = 0;
         let lastMousePosition = { x: 0, y: 0 };
         let lastTime = Date.now();
@@ -500,7 +500,7 @@
             }
         }
 
-        // Easter Egg 2: Momentum Trail (Physics Concept)
+        // ee2: little stardust/momentum-type trail (also utilizing physics concepts ig)
         function createMomentumTrail(event) {
             if (mouseVelocity > 2) {
                 const trail = document.createElement('div');
@@ -520,7 +520,7 @@
             }
         }
 
-        // Easter Egg 3: Transportation Network (ScioCamp Concept)
+        // ee 3 - transportation network - hunger-gamey & kinda sciocamp related !!
         function activateEasterEgg(type) {
             const velocityEgg = document.getElementById('velocityEgg');
             
@@ -544,7 +544,7 @@
             }
         }
 
-        // Special sequence easter egg
+        // hidden hidden special sequence (easter egg)
         let keySequence = [];
         const secretCode = ['d', '6', 't', 'r', 'a', 'n', 's', 'p', 'o', 'r', 't'];
 
@@ -556,7 +556,7 @@
             }
             
             if (keySequence.join('') === secretCode.join('')) {
-                // Activate special transportation mode
+                // activates the special 'transportation mode' (if you can call it that)
                 document.body.style.transition = 'all 2s ease';
                 document.body.style.transform = 'scale(1.05)';
                 document.body.style.filter = 'brightness(1.2) saturate(1.3)';
@@ -571,7 +571,7 @@
             }
         }
 
-        // Initialize everything
+        // initialize everything
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
             
@@ -582,7 +582,7 @@
             
             document.addEventListener('keydown', handleKeyPress);
             
-            // Add some dynamic interactions
+            // add some dynamic interactions
             const buttons = document.querySelectorAll('.btn');
             buttons.forEach(btn => {
                 btn.addEventListener('mouseenter', function() {
@@ -594,13 +594,13 @@
                 });
             });
 
-            // Activate velocity tracker after 3 seconds
+            // activate velocity tracker - after 3 seconds
             setTimeout(() => {
                 document.getElementById('velocityEgg').classList.add('active');
             }, 3000);
         });
 
-        // Add floating particles effect
+        // add floating particles effect
         setInterval(() => {
             const particle = document.createElement('div');
             particle.style.position = 'fixed';
