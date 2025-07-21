@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>District 6 Transportation - Homebase</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Electrolize:wght@400&family=Audiowide:wght@400&family=Saira+Stencil+One:wght@400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(26, 50, 120, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(26, 50, 120, 0.3) 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: -2;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #4a90e2;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            border: 2px solid #4a90e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 18px;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .logo-text {
+            font-family: 'Audiowide', monospace;
+            font-size: 24px;
+            font-weight: 400;
+            color: #ffffff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-item {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #a0a0a0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            color: #4a90e2;
+            text-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4a90e2;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            fill: #a0a0a0;
+        }
+
+        .nav-icon:hover {
+            fill: #4a90e2;
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 90px);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .title {
+            font-family: 'Saira Stencil One', monospace;
+            font-size: 5.5rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4a90e2, #87ceeb, #ffffff, #4a90e2);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(74, 144, 226, 0.8), 0 0 100px rgba(74, 144, 226, 0.4);
+            letter-spacing: 12px;
+            filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.6));
+        }
+
+        .subtitle {
+            font-family: 'Electrolize', monospace;
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 40px;
+            letter-spacing: 8px;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(74, 144, 226, 0.3);
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #b0b0b0;
+            margin-bottom: 60px;
+            letter-spacing: 3px;
+            max-width: 800px;
+            line-height: 1.6;
+            text-shadow: 0 0 10px rgba(176, 176, 176, 0.3);
+        }
+
+        .info-box {
+            background: rgba(20, 30, 50, 0.7);
+            border: 2px solid rgba(74, 144, 226, 0.3);
+            border-radius: 15px;
+            padding: 40px 50px;
+            margin: 40px 0;
+            max-width: 900px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(74, 144, 226, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            border-color: rgba(74, 144, 226, 0.6);
+            box-shadow: 0 12px 40px rgba(74, 144, 226, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .info-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #e0e0e0;
+            line-height: 1.8;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+        }
+
+        .theme-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .theme-highlight {
+            color: #4a90e2;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 30px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: 'Electrolize', monospace;
+            font-size: 1.2rem;
+            font-weight: 400;
+            padding: 20px 40px;
+            border: 3px solid #4a90e2;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.3), rgba(74, 144, 226, 0.1));
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 3px;
+            backdrop-filter: blur(10px);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+            text-transform: uppercase;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.4), rgba(74, 144, 226, 0.2));
+            border-color: #87ceeb;
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Hidden Easter Eggs */
+        .easter-egg {
+            position: fixed;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .easter-egg.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .velocity-indicator {
+            top: 80px;
+            right: 20px;
+            background: rgba(74, 144, 226, 0.2);
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-family: 'Electrolize', monospace;
+            font-size: 14px;
+            border: 2px solid rgba(74, 144, 226, 0.5);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.3);
+        }
+
+        .momentum-trail {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #4a90e2;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .title {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+
+            .subtitle {
+                font-size: 1.8rem;
+                letter-spacing: 3px;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+                padding: 0 20px;
+            }
+
+            .info-box {
+                margin: 20px;
+                padding: 30px 25px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .btn {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="stars" id="stars"></div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-box">D6</div>
+            <div class="logo-text">District 6 Transportation</div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="#" class="nav-item">Home</a>
+            <a href="#" class="nav-item">Tributes</a>
+            <a href="#" class="nav-item">Arena</a>
+            <a href="#" class="nav-item">Leaderboard</a>
+            <a href="#" class="nav-item">Lab</a>
+        </nav>
+
+        <div class="nav-actions">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="title">DISTRICT 6</h1>
+        <h2 class="subtitle">HOMEBASE</h2>
+        <p class="tagline">Where motion is our greatest weapon in the arena</p>
+
+        <div class="info-box">
+            <p class="info-text">
+                Welcome to the official District 6 tribute site. Our tributes are trained in the most advanced 
+                transportation disciplines, combining theoretical knowledge with practical applications to survive and 
+                thrive in the arena.
+            </p>
+            
+            <p class="theme-text">
+                This year's theme: <span class="theme-highlight">ScioCamp - Where Science Meets Survival</span>
+            </p>
+        </div>
+
+        <div class="action-buttons">
+            <a href="#" class="btn" onclick="activateEasterEgg('tributes')">Meet Our Tributes</a>
+            <a href="#" class="btn btn-secondary" onclick="activateEasterEgg('lab')">Enter The Lab</a>
+        </div>
+    </main>
+
+    <!-- Easter Eggs -->
+    <div class="easter-egg velocity-indicator" id="velocityEgg">
+        <div>Velocity: <span id="velocity">0</span> m/s</div>
+        <div>Physics Mode: ACTIVE</div>
+    </div>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (2 + Math.random() * 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Easter Egg 1: Velocity Tracker (Physics Concept)
+        let mouseVelocity = 0;
+        let lastMousePosition = { x: 0, y: 0 };
+        let lastTime = Date.now();
+
+        function trackVelocity(event) {
+            const currentTime = Date.now();
+            const deltaTime = currentTime - lastTime;
+            
+            if (deltaTime > 0) {
+                const deltaX = event.clientX - lastMousePosition.x;
+                const deltaY = event.clientY - lastMousePosition.y;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                mouseVelocity = Math.round((distance / deltaTime) * 100) / 10;
+                document.getElementById('velocity').textContent = mouseVelocity;
+                
+                lastMousePosition = { x: event.clientX, y: event.clientY };
+                lastTime = currentTime;
+            }
+        }
+
+        // Easter Egg 2: Momentum Trail (Physics Concept)
+        function createMomentumTrail(event) {
+            if (mouseVelocity > 2) {
+                const trail = document.createElement('div');
+                trail.className = 'momentum-trail';
+                trail.style.left = event.clientX + 'px';
+                trail.style.top = event.clientY + 'px';
+                trail.style.opacity = Math.min(mouseVelocity / 10, 1);
+                document.body.appendChild(trail);
+
+                setTimeout(() => {
+                    trail.style.opacity = '0';
+                    trail.style.transform = 'scale(0)';
+                    setTimeout(() => {
+                        document.body.removeChild(trail);
+                    }, 300);
+                }, 100);
+            }
+        }
+
+        // Easter Egg 3: Transportation Network (ScioCamp Concept)
+        function activateEasterEgg(type) {
+            const velocityEgg = document.getElementById('velocityEgg');
+            
+            if (type === 'tributes') {
+                velocityEgg.classList.add('active');
+                setTimeout(() => {
+                    alert('🚀 TRANSPORTATION NETWORK ACTIVATED! 🚀\n\nFun Fact: District 6 specializes in transportation technology, which involves complex physics concepts like velocity, acceleration, and momentum - all key survival skills in the arena!');
+                }, 500);
+            } else if (type === 'lab') {
+                // Kinetic energy demonstration
+                const title = document.querySelector('.title');
+                title.style.animation = 'none';
+                title.style.transform = 'scale(1.1)';
+                title.style.textShadow = '0 0 50px rgba(74, 144, 226, 0.8)';
+                
+                setTimeout(() => {
+                    title.style.transform = 'scale(1)';
+                    title.style.animation = 'gradientShift 3s ease-in-out infinite';
+                    alert('⚡ KINETIC ENERGY LAB ACCESSED! ⚡\n\nScience Fact: Kinetic Energy = ½mv² where m is mass and v is velocity. In the arena, understanding motion physics gives tributes a strategic advantage!');
+                }, 300);
+            }
+        }
+
+        // Special sequence easter egg
+        let keySequence = [];
+        const secretCode = ['d', '6', 't', 'r', 'a', 'n', 's', 'p', 'o', 'r', 't'];
+
+        function handleKeyPress(event) {
+            keySequence.push(event.key.toLowerCase());
+            
+            if (keySequence.length > secretCode.length) {
+                keySequence.shift();
+            }
+            
+            if (keySequence.join('') === secretCode.join('')) {
+                // Activate special transportation mode
+                document.body.style.transition = 'all 2s ease';
+                document.body.style.transform = 'scale(1.05)';
+                document.body.style.filter = 'brightness(1.2) saturate(1.3)';
+                
+                setTimeout(() => {
+                    document.body.style.transform = 'scale(1)';
+                    document.body.style.filter = 'brightness(1) saturate(1)';
+                    alert('🎯 MASTER TRANSPORTATION CODE UNLOCKED! 🎯\n\nCongratulations! You\'ve discovered the secret District 6 transportation matrix. This demonstrates principles of pattern recognition and systematic thinking - crucial skills for both scientific research and arena survival!');
+                }, 2000);
+                
+                keySequence = [];
+            }
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            
+            document.addEventListener('mousemove', function(event) {
+                trackVelocity(event);
+                createMomentumTrail(event);
+            });
+            
+            document.addEventListener('keydown', handleKeyPress);
+            
+            // Add some dynamic interactions
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.05)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Activate velocity tracker after 3 seconds
+            setTimeout(() => {
+                document.getElementById('velocityEgg').classList.add('active');
+            }, 3000);
+        });
+
+        // Add floating particles effect
+        setInterval(() => {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '2px';
+            particle.style.height = '2px';
+            particle.style.backgroundColor = '#4a90e2';
+            particle.style.borderRadius = '50%';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight + 'px';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '0';
+            particle.style.opacity = '0.7';
+            
+            document.body.appendChild(particle);
+            
+            const animation = particle.animate([
+                { transform: 'translateY(0px)', opacity: 0.7 },
+                { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
+            ], {
+                duration: 8000 + Math.random() * 4000,
+                easing: 'linear'
+            });
+            
+            animation.addEventListener('finish', () => {
+                document.body.removeChild(particle);
+            });
+        }, 200);
+    </script>
+</body>
+</html>
