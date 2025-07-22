@@ -1,1 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>District 6 - Arena</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Electrolize:wght@400&family=Audiowide:wght@400&family=Saira+Stencil+One:wght@400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Background and animations from tributes page */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(26, 50, 120, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(26, 50, 120, 0.3) 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: -2;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #4a90e2;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header from tributes page */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            border: 2px solid #4a90e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 18px;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .logo-text {
+            font-family: 'Audiowide', monospace;
+            font-size: 24px;
+            font-weight: 400;
+            color: #ffffff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-item {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #a0a0a0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: #4a90e2;
+            text-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4a90e2;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover::after, .nav-item.active::after {
+            width: 100%;
+        }
+
+        /* Arena-specific styles */
+        .arena-hero {
+            text-align: center;
+            padding: 60px 40px 40px;
+            position: relative;
+        }
+
+        .arena-title {
+            font-family: 'Saira Stencil One', monospace;
+            font-size: 5rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(74, 144, 226, 0.8);
+            letter-spacing: 10px;
+            filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.6));
+        }
+
+        .arena-subtitle {
+            font-family: 'Electrolize', monospace;
+            font-size: 1.6rem;
+            color: #b0b0b0;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+        }
+
+        /* Word Cloud Sections */
+        .word-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .word-cloud-container {
+            background: rgba(20, 30, 50, 0.6);
+            border: 2px solid rgba(74, 144, 226, 0.3);
+            border-radius: 25px;
+            padding: 40px;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .word-cloud-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .word-cloud-container:hover::before {
+            left: 100%;
+        }
+
+        .word-cloud-container:hover {
+            border-color: rgba(74, 144, 226, 0.6);
+            box-shadow: 0 25px 50px rgba(74, 144, 226, 0.2);
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4a90e2;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        /* Word Art Styles */
+        .word-art {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .superior-art {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            color: #4a90e2;
+            text-align: center;
+            line-height: 0.9;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .superior-art .main-word {
+            font-size: 3rem;
+            display: block;
+            text-shadow: 0 0 20px rgba(74, 144, 226, 0.8);
+        }
+
+        .superior-art .sub-words {
+            font-size: 1.2rem;
+            opacity: 0.7;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+
+        .chill-art {
+            font-family: 'Electrolize', monospace;
+            color: #87ceeb;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .chill-art .main-word {
+            font-size: 4rem;
+            font-weight: 400;
+            display: block;
+            text-shadow: 0 0 15px rgba(135, 206, 235, 0.6);
+        }
+
+        .chill-art .descriptors {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .dedicated-art {
+            font-family: 'Rajdhani', sans-serif;
+            color: #96ceb4;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .dedicated-art .main-word {
+            font-size: 3.5rem;
+            display: block;
+            text-shadow: 0 0 18px rgba(150, 206, 180, 0.7);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        .dedicated-art .motivation {
+            font-size: 1rem;
+            margin-top: 15px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        .geeky-art {
+            font-family: 'Audiowide', monospace;
+            color: #feca57;
+            text-align: center;
+            animation: float 2.8s ease-in-out infinite;
+        }
+
+        .geeky-art .main-word {
+            font-size: 3.8rem;
+            display: block;
+            text-shadow: 0 0 22px rgba(254, 202, 87, 0.8);
+        }
+
+        .geeky-art .science-terms {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        /* Science Easter Egg Section */
+        .easter-egg-section {
+            margin: 80px auto;
+            max-width: 800px;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .easter-egg-container {
+            background: rgba(20, 30, 50, 0.7);
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .easter-egg-container:hover {
+            border-color: rgba(255, 107, 107, 0.6);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .easter-egg-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            animation: rotate 10s linear infinite;
+        }
+
+        .easter-egg-content {
+            font-family: 'Electrolize', monospace;
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .hidden-formula {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            color: #4a90e2;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            margin-top: 15px;
+        }
+
+        .easter-egg-container:hover .hidden-formula {
+            opacity: 1;
+        }
+
+        /* Motivational Quotes */
+        .quotes-section {
+            margin: 60px auto;
+            max-width: 1200px;
+            padding: 0 40px;
+        }
+
+        .quotes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .quote-card {
+            background: rgba(20, 30, 50, 0.5);
+            border: 2px solid rgba(74, 144, 226, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-card:hover {
+            border-color: rgba(74, 144, 226, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(74, 144, 226, 0.2);
+        }
+
+        .quote-text {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .quote-author {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            color: #4a90e2;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        /* Back to home button */
+        .back-home {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.3), rgba(74, 144, 226, 0.1));
+            border: 2px solid #4a90e2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+            z-index: 1000;
+        }
+
+        .back-home:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+        }
+
+        .back-home svg {
+            width: 24px;
+            height: 24px;
+            fill: #4a90e2;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .arena-title {
+                font-size: 3rem;
+                letter-spacing: 6px;
+            }
+
+            .arena-subtitle {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+
+            .word-sections {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+                gap: 30px;
+            }
+
+            .word-cloud-container {
+                padding: 30px 20px;
+                min-height: 300px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .superior-art .main-word,
+            .chill-art .main-word,
+            .dedicated-art .main-word,
+            .geeky-art .main-word {
+                font-size: 2.5rem;
+            }
+
+            .quotes-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="stars" id="stars"></div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-box">D6</div>
+            <div class="logo-text">District 6 Transportation</div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="tributes.html" class="nav-item">Tributes</a>
+            <a href="arena.html" class="nav-item active">Arena</a>
+            <a href="leaderboard.html" class="nav-item">Leaderboard</a>
+            <a href="lab.html" class="nav-item">Lab</a>
+        </nav>
+    </header>
+
+    <div class="arena-hero">
+        <h1 class="arena-title">THE ARENA</h1>
+        <p class="arena-subtitle">Where Excellence Meets Innovation</p>
+    </div>
+
+    <div class="word-sections">
+        <div class="word-cloud-container">
+            <h2 class="section-title">Superior</h2>
+            <div class="word-art">
+                <div class="superior-art">
+                    <span class="main-word">EXCELLENCE</span>
+                    <div class="sub-words">
+                        SUPREME • OUTSTANDING • ELITE<br>
+                        UNMATCHED • EXTRAORDINARY<br>
+                        PEAK PERFORMANCE • WORLD-CLASS<br>
+                        SUPERIOR • EXCEPTIONAL • PREMIER
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="word-cloud-container">
+            <h2 class="section-title">Chill</h2>
+            <div class="word-art">
+                <div class="chill-art">
+                    <span class="main-word">BALANCED</span>
+                    <div class="descriptors">
+                        calm • composed • cool • mellow<br>
+                        tranquil • serene • peaceful • zen<br>
+                        steady • humble • grounded<br>
+                        harmonious • centered • mindful
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="word-cloud-container">
+            <h2 class="section-title">Dedicated</h2>
+            <div class="word-art">
+                <div class="dedicated-art">
+                    <span class="main-word">COMMITTED</span>
+                    <div class="motivation">
+                        relentless • determined • focused<br>
+                        passionate • driven • persistent<br>
+                        "go sky squad" • unwavering<br>
+                        devoted • ambitious • resilient
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="word-cloud-container">
+            <h2 class="section-title">Geeky</h2>
+            <div class="word-art">
+                <div class="geeky-art">
+                    <span class="main-word">BRILLIANT</span>
+                    <div class="science-terms">
+                        innovative • intellectual • curious<br>
+                        analytical • logical • creative<br>
+                        "fire won our hearts" • genius<br>
+                        scientific • tech-savvy • visionary
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="easter-egg-section">
+        <div class="easter-egg-container" onclick="toggleEasterEgg()">
+            <h3 class="easter-egg-title">🧪 Science Easter Egg 🧪</h3>
+            <div class="easter-egg-content">
+                Did you know? The probability of randomly finding this easter egg is approximately 1 in 42! 
+                <br><br>
+                <em>Click to reveal the secret formula for success!</em>
+            </div>
+            <div class="hidden-formula" id="hiddenFormula">
+                Success = (Curiosity × Hard Work)² + (Teamwork × Innovation) - Procrastination
+                <br><br>
+                <strong>Fun Fact:</strong> The number 42 is the "Answer to the Ultimate Question of Life, the Universe, and Everything" according to Douglas Adams! 🚀
+            </div>
+        </div>
+    </div>
+
+    <div class="quotes-section">
+        <div class="quotes-grid">
+            <div class="quote-card">
+                <div class="quote-text">
+                    "The only way to do great work is to love what you do. Stay hungry, stay foolish, and never stop learning."
+                </div>
+                <div class="quote-author">- Adapted from Steve Jobs</div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">
+                    "Science is not only a disciple of reason but also one of romance and passion. Every great discovery starts with wonder."
+                </div>
+                <div class="quote-author">- Inspired by Stephen Hawking</div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">
+                    "In teamwork, silence isn't golden, it's deadly. Communication and collaboration are the keys to breakthrough innovation."
+                </div>
+                <div class="quote-author">- District 6 Wisdom</div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">
+                    "Failure is simply the opportunity to begin again, this time more intelligently. Every experiment teaches us something valuable."
+                </div>
+                <div class="quote-author">- Henry Ford (Modified)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-home" onclick="goHome()">
+        <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </div>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 120;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Easter egg toggle
+        function toggleEasterEgg() {
+            const formula = document.getElementById('hiddenFormula');
+            const container = document.querySelector('.easter-egg-container');
+            
+            if (formula.style.opacity === '1') {
+                formula.style.opacity = '0';
+                container.style.borderColor = 'rgba(255, 107, 107, 0.3)';
+            } else {
+                formula.style.opacity = '1';
+                container.style.borderColor = 'rgba(255, 107, 107, 0.8)';
+                container.style.boxShadow = '0 0 40px rgba(255, 107, 107, 0.4)';
+                
+                // Add a fun particle effect
+                createParticles();
+            }
+        }
+
+        // Particle effect for easter egg
+        function createParticles() {
+            const container = document.querySelector('.easter-egg-container');
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.background = '#ff6b6b';
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.opacity = '1';
+                particle.style.transition = 'all 2s ease-out';
+                particle.style.pointerEvents = 'none';
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.style.transform = `translate(${(Math.random() - 0.5) * 200}px, ${(Math.random() - 0.5) * 200}px)`;
+                    particle.style.opacity = '0';
+                }, 100);
+                
+                setTimeout(() => {
+                    container.removeChild(particle);
+                }, 2100);
+            }
+        }
+
+        // Navigate to home
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Interactive mouse effects
+        document.addEventListener('mousemove', function(e) {
+            const stars = document.querySelectorAll('.star');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            stars.forEach((star, index) => {
+                const speed = (index % 7 + 1) * 0.3;
+                const xOffset = (x - 0.5) * speed;
+                const yOffset = (y - 0.5) * speed;
+                
+                star.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+
+        // Add floating animation to word clouds on scroll
+        window.addEventListener('scroll', function() {
+            const wordClouds = document.querySelectorAll('.word-cloud-container');
+            const scrolled = window.pageYOffset;
+            
+            wordClouds.forEach((cloud, index) => {
+                const rate = scrolled * -0.5;
+                cloud.style.transform = `translateY(${rate * (index % 2 === 0 ? 1 : -1) * 0.1}px)`;
+            });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            
+            // Add entrance animations
+            const containers = document.querySelectorAll('.word-cloud-container');
+            containers.forEach((container, index) => {
+                container.style.animation = `fadeIn 1s ease-out ${index * 0.2}s both`;
+            });
+        });
+
+        // Fun scientific calculator easter egg
+        console.log("🧪 District 6 Science Lab Activated!");
+        console.log("Try typing: calculateAwesome() in the console!");
+        
+        window.calculateAwesome = function() {
+            const awesomeLevel = Math.floor(Math.random() * 100) + 100;
+            console.log(`🚀 Your awesomeness level: ${awesomeLevel}% (Above average, as expected from District 6!)`);
+            console.log("🔬 Scientific fact: This calculation uses quantum mechanics and pure determination!");
+            return awesomeLevel;
+        };
+    </script>
+</body>
+</html>
