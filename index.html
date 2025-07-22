@@ -568,6 +568,18 @@
         <div>Physics Mode: ACTIVE</div>
     </div>
 
+    <!-- crypto hack easter egg -->
+    <div class="crypto-hack">
+        <div class="crypto-message" onclick="showMorseHint()" id="cryptoMessage">
+            🚀 ENCRYPTED TRANSMISSION: 
+            <br>-- --- ...- . / ..-. .- ... -
+        </div>
+        <div class="crypto-input">
+            <input type="text" class="crypto-textbox" id="cryptoInput" placeholder="decode transmission..." maxlength="20">
+            <button class="crypto-submit" onclick="checkCryptoAnswer()">HACK</button>
+        </div>
+    </div>
+
     <script>
         // create animated stars
         function createStars() {
@@ -678,6 +690,86 @@
             }
         }
 
+        // crypto hack functions
+        let hintShown = false;
+        
+        function showMorseHint() {
+            const message = document.getElementById('cryptoMessage');
+            if (!hintShown) {
+                message.innerHTML = `🚀 ENCRYPTED TRANSMISSION:<br>-- --- ...- . / ..-. .- ... -<br><small style="color: #87ceeb;">HINT: District 6's specialty in morse code</small>`;
+                hintShown = true;
+            } else {
+                message.innerHTML = `🚀 MORSE CODE DECODED:<br>-- --- ...- . = MOVE<br>..-. .- ... - = FAST<br><small style="color: #87ceeb;">Answer: District 6's motto</small>`;
+            }
+        }
+
+        function checkCryptoAnswer() {
+            const input = document.getElementById('cryptoInput').value.toLowerCase().trim();
+            const correctAnswers = ['move fast', 'movefast', 'speed', 'velocity', 'transport'];
+            
+            if (correctAnswers.includes(input)) {
+                activateTransportationSequence();
+                document.getElementById('cryptoInput').value = '';
+                document.getElementById('cryptoMessage').innerHTML = '✅ TRANSMISSION DECODED!<br>Transportation Network: ONLINE';
+            } else {
+                document.getElementById('cryptoInput').style.borderColor = '#ff4757';
+                setTimeout(() => {
+                    document.getElementById('cryptoInput').style.borderColor = 'rgba(74, 144, 226, 0.5)';
+                }, 1000);
+            }
+        }
+
+        function activateTransportationSequence() {
+            // Speed boost effect on main title
+            const title = document.querySelector('.title');
+            title.classList.add('speed-boost');
+            
+            // Change background temporarily
+            document.body.classList.add('transport-success');
+            
+            // Create flying vehicles
+            const vehicles = ['🚁', '🚂', '🚀', '✈️', '🚊', '🛸'];
+            
+            vehicles.forEach((vehicle, index) => {
+                setTimeout(() => {
+                    createFlyingVehicle(vehicle);
+                }, index * 300);
+            });
+            
+            // Show success message
+            setTimeout(() => {
+                alert('🚀 TRANSPORTATION MATRIX ACTIVATED! 🚀\n\nDistrict 6 Transport Network is now ONLINE!\nAll vehicles are operating at maximum efficiency!\n\nMorse Code: "MOVE FAST" - The unofficial motto of District 6!');
+            }, 1000);
+            
+            // Reset effects
+            setTimeout(() => {
+                title.classList.remove('speed-boost');
+                document.body.classList.remove('transport-success');
+            }, 2000);
+        }
+
+        function createFlyingVehicle(vehicle) {
+            const vehicleEl = document.createElement('div');
+            vehicleEl.className = 'transport-vehicle';
+            vehicleEl.textContent = vehicle;
+            vehicleEl.style.left = '-50px';
+            vehicleEl.style.top = (50 + Math.random() * (window.innerHeight - 100)) + 'px';
+            
+            document.body.appendChild(vehicleEl);
+            
+            const animation = vehicleEl.animate([
+                { transform: 'translateX(0px) rotate(0deg)', opacity: 1 },
+                { transform: `translateX(${window.innerWidth + 100}px) rotate(360deg)`, opacity: 0.8 }
+            ], {
+                duration: 3000 + Math.random() * 2000,
+                easing: 'ease-out'
+            });
+            
+            animation.addEventListener('finish', () => {
+                document.body.removeChild(vehicleEl);
+            });
+        }
+
         // initialize everything
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
@@ -705,6 +797,13 @@
             setTimeout(() => {
                 document.getElementById('velocityEgg').classList.add('active');
             }, 3000);
+
+            // crypto hack enter key support
+            document.getElementById('cryptoInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkCryptoAnswer();
+                }
+            });
         });
 
         // add floating particles effect
