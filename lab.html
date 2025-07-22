@@ -461,6 +461,8 @@
             color: #4a90e2;
             text-shadow: 0 0 10px #4a90e2;
             animation: hologramFlicker 3s linear infinite;
+            text-align: center;
+            padding: 10px;
         }
 
         .hologram-lines {
@@ -602,6 +604,8 @@
             background: linear-gradient(90deg, transparent, #ff0040, transparent);
             box-shadow: 0 0 10px #ff0040, 0 0 20px #ff0040;
             animation: laserSweep 3s linear infinite;
+            width: 100%;
+            top: 50%;
         }
 
         .laser-beam.vertical {
@@ -609,6 +613,13 @@
             height: 100%;
             background: linear-gradient(180deg, transparent, #ff0040, transparent);
             animation: laserSweepVertical 4s linear infinite;
+            left: 25%;
+            top: 0;
+        }
+
+        .laser-beam.vertical:nth-child(3) {
+            left: 75%;
+            animation-delay: -2s;
         }
 
         @keyframes laserSweep {
@@ -699,16 +710,34 @@
         .crystal:nth-child(2) {
             animation-delay: -2s;
             background: linear-gradient(45deg, #ff6b6b, #ff9999, #ffcc99);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
         }
 
         .crystal:nth-child(3) {
             animation-delay: -4s;
             background: linear-gradient(45deg, #9370db, #ba55d3, #dda0dd);
+            box-shadow: 0 0 20px rgba(147, 112, 219, 0.6);
         }
 
         @keyframes crystalSpin {
             0% { transform: rotateY(0deg) rotateX(0deg); }
             100% { transform: rotateY(360deg) rotateX(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.9rem;
+            color: #888;
+            background: rgba(10, 10, 15, 0.3);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(74, 144, 226, 0.1);
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
         }
 
         /* Responsive design */
@@ -838,11 +867,10 @@
                     <button class="lab-button" onclick="overloadCore()">Overload</button>
                 </div>
             </div>
-
             <!-- Wave Generator -->
             <div class="experiment-card">
                 <h3 class="experiment-title">Sonic Wave Generator</h3>
-                <p class="experiment-description">Frequency manipulation for arena sound barrier systems</p>
+                <p class="experiment-description">Advanced frequency manipulation for arena sound barrier systems</p>
                 <div class="wave-generator">
                     <div class="wave"></div>
                     <div class="wave"></div>
@@ -851,242 +879,729 @@
                 <div class="lab-controls">
                     <button class="lab-button" onclick="adjustFrequency('low')">Low Freq</button>
                     <button class="lab-button" onclick="adjustFrequency('high')">High Freq</button>
+                    <button class="lab-button" onclick="toggleWaves()">Pulse</button>
                 </div>
             </div>
 
             <!-- Hologram Display -->
             <div class="experiment-card">
-              <h3 class="experiment-title">Holographic Interface</h3>
-              <p class="experiment-description">3D projection system for tribute training simulations</p>
-              <div class="hologram-display">
-                <div class="hologram-text" id="hologramMessage">Initializing...</div>
-                <div class="hologram-lines"></div>
-              </div>
-              <div class="lab-controls">
-                <button class="lab-button" onclick="activateHologram()">Activate</button>
-                <button class="lab-button" onclick="randomizeHologram()">Randomize</button>
-              </div>
+                <h3 class="experiment-title">Holographic Interface</h3>
+                <p class="experiment-description">3D projection system for tribute training simulations</p>
+                <div class="hologram-display">
+                    <div class="hologram-text" id="hologramMessage">INITIALIZING...</div>
+                    <div class="hologram-lines"></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="activateHologram()">Activate</button>
+                    <button class="lab-button" onclick="randomizeHologram()">Randomize</button>
+                    <button class="lab-button" onclick="shutdownHologram()">Shutdown</button>
+                </div>
             </div>
 
             <!-- Neural Network -->
             <div class="experiment-card">
-              <h3 class="experiment-title">Neural Network Mapper</h3>
-              <p class="experiment-description">Mapping cognitive tribute patterns using electro-nanopulses</p>
-              <div class="neural-network" id="neuralNetwork">
-                <!-- Neurons and synapses will be generated by JavaScript -->
-              </div>
-              <div class="lab-controls">
-                <button class="lab-button" onclick="generateNetwork()">Generate</button>
-                <button class="lab-button" onclick="clearNetwork()">Reset</button>
-              </div>
+                <h3 class="experiment-title">Neural Network Mapper</h3>
+                <p class="experiment-description">Cognitive pattern analysis using advanced electro-nanopulse technology</p>
+                <div class="neural-network" id="neuralNetwork">
+                    <!-- Neurons and synapses generated by JavaScript -->
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="generateNetwork()">Generate</button>
+                    <button class="lab-button" onclick="pulseNetwork()">Pulse</button>
+                    <button class="lab-button" onclick="clearNetwork()">Reset</button>
+                </div>
             </div>
 
             <!-- Quantum Field -->
             <div class="experiment-card">
-              <h3 class="experiment-title">Quantum Field Stabilizer</h3>
-              <p class="experiment-description">Particle wave harmonization to improve transport core performance</p>
-              <div class="quantum-field" id="quantumField"></div>
-              <div class="lab-controls">
-                <button class="lab-button" onclick="toggleQuantum()">Stabilize</button>
-                <button class="lab-button" onclick="destabilizeQuantum()">Disrupt</button>
-              </div>
+                <h3 class="experiment-title">Quantum Field Stabilizer</h3>
+                <p class="experiment-description">Particle wave harmonization for enhanced transport core performance</p>
+                <div class="quantum-field" id="quantumField"></div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="toggleQuantum()">Stabilize</button>
+                    <button class="lab-button" onclick="destabilizeQuantum()">Disrupt</button>
+                    <button class="lab-button" onclick="quantumBurst()">Burst</button>
+                </div>
             </div>
 
             <!-- Laser Grid -->
             <div class="experiment-card">
-              <h3 class="experiment-title">Laser Grid Defense</h3>
-              <p class="experiment-description">Tribute training obstacle system with reactive beams</p>
-              <div class="laser-grid">
-                <div class="laser-beam"></div>
-                <div class="laser-beam vertical"></div>
-                <div class="laser-beam vertical"></div>
-              </div>
-              <div class="lab-controls">
-                <button class="lab-button" onclick="activateLaser()">Activate</button>
-                <button class="lab-button" onclick="deactivateLaser()">Deactivate</button>
-              </div>
+                <h3 class="experiment-title">Laser Grid Defense</h3>
+                <p class="experiment-description">Advanced training obstacle system with reactive photon beams</p>
+                <div class="laser-grid" id="laserGrid">
+                    <div class="laser-beam"></div>
+                    <div class="laser-beam vertical"></div>
+                    <div class="laser-beam vertical"></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="activateLaser()">Activate</button>
+                    <button class="lab-button" onclick="intensifyLaser()">Intensify</button>
+                    <button class="lab-button" onclick="deactivateLaser()">Deactivate</button>
+                </div>
             </div>
-
 
             <!-- Magnetic Field -->
             <div class="experiment-card">
-              <h3 class="experiment-title">Magnetic Field Generator</h3>
-              <p class="experiment-description">Induction chamber for molecular alignment protocols</p>
-              <div class="magnetic-field" id="magneticField"></div>
-              <div class="lab-controls">
-                <button class="lab-button" onclick="pulseField()">Pulse</button>
-                <button class="lab-button" onclick="clearField()">Clear</button>
-              </div>
+                <h3 class="experiment-title">Magnetic Field Generator</h3>
+                <p class="experiment-description">Electromagnetic induction chamber for molecular alignment protocols</p>
+                <div class="magnetic-field" id="magneticField"></div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="pulseField()">Pulse</button>
+                    <button class="lab-button" onclick="amplifyField()">Amplify</button>
+                    <button class="lab-button" onclick="clearField()">Clear</button>
+                </div>
             </div>
 
             <!-- Crystal Formation -->
             <div class="experiment-card">
-              <h3 class="experiment-title">Crystal Growth Chamber</h3>
-              <p class="experiment-description">Geometric mineral simulation for tribute armor optimization</p>
-              <div class="crystal-formation">
-                <div class="crystal"></div>
-                <div class="crystal"></div>
-                <div class="crystal"></div>
-              </div>
-              <div class="lab-controls">
-                <button class="lab-button" onclick="spinCrystals()">Spin</button>
-                <button class="lab-button" onclick="stopCrystals()">Stop</button>
-              </div>
+                <h3 class="experiment-title">Crystal Growth Chamber</h3>
+                <p class="experiment-description">Advanced geometric mineral synthesis for tribute armor optimization</p>
+                <div class="crystal-formation" id="crystalChamber">
+                    <div class="crystal"></div>
+                    <div class="crystal"></div>
+                    <div class="crystal"></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="spinCrystals()">Activate</button>
+                    <button class="lab-button" onclick="accelerateCrystals()">Accelerate</button>
+                    <button class="lab-button" onclick="stopCrystals()">Stop</button>
+                </div>
             </div>
 
-            <div class="back-home" onclick="window.location.href='index.html'">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <!-- Time Dilation Chamber -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">Time Dilation Chamber</h3>
+                <p class="experiment-description">Temporal field manipulation for accelerated tribute conditioning</p>
+                <div class="time-chamber">
+                    <div class="time-ring"></div>
+                    <div class="time-ring"></div>
+                    <div class="time-ring"></div>
+                    <div class="time-core"></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="activateTime()">Activate</button>
+                    <button class="lab-button" onclick="reverseTime()">Reverse</button>
+                    <button class="lab-button" onclick="resetTime()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Plasma Containment -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">Plasma Containment Unit</h3>
+                <p class="experiment-description">High-energy plasma research for next-generation arena hazards</p>
+                <div class="plasma-container">
+                    <div class="plasma-bolt"></div>
+                    <div class="plasma-bolt"></div>
+                    <div class="plasma-bolt"></div>
+                    <div class="containment-field"></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="generatePlasma()">Generate</button>
+                    <button class="lab-button" onclick="containPlasma()">Contain</button>
+                    <button class="lab-button" onclick="dischargePlasma()">Discharge</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-home" onclick="window.location.href='index.html'">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-              </svg>
-            </div>
+            </svg>
+        </div>
+    </div>
 
-          <script>
-          // 🧬 DNA Helix Functions
-          let dnaActive = false;
-          function toggleDNA() {
+    <script>
+        // Initialize stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 🧬 DNA Helix Functions
+        let dnaActive = false;
+        function toggleDNA() {
             const helix = document.getElementById("dnaHelix");
             dnaActive = !dnaActive;
-            helix.style.transform = dnaActive ? "rotate(360deg)" : "rotate(0deg)";
+            helix.style.transform = dnaActive ? "rotate(360deg) scale(1.1)" : "rotate(0deg) scale(1)";
             helix.style.transition = "transform 2s ease-in-out";
-          }
-        
-          function randomizeDNA() {
-            const strands = document.querySelectorAll("#dnaHelix .dna-strand");
-            strands.forEach(strand => {
-              strand.style.background = `linear-gradient(to bottom, #${Math.floor(Math.random()*16777215).toString(16)}, #${Math.floor(Math.random()*16777215).toString(16)})`;
-            });
-          }
-        
-          // 🌀 Quantum Particle System
-          function toggleParticles() {
-            const system = document.getElementById("particleSystem");
-            for (let i = 0; i < 30; i++) {
-              const p = document.createElement("div");
-              p.classList.add("particle");
-              p.style.left = Math.random() * 100 + "%";
-              p.style.top = Math.random() * 100 + "%";
-              p.style.setProperty("--random-x", `${Math.random() * 40 - 20}px`);
-              system.appendChild(p);
+            
+            // Add DNA bases dynamically
+            if (dnaActive) {
+                const bases = helix.querySelectorAll('.dna-base');
+                bases.forEach(base => base.remove());
+                
+                for (let i = 0; i < 10; i++) {
+                    const base = document.createElement('div');
+                    base.className = 'dna-base';
+                    base.style.top = (i * 20) + 'px';
+                    base.style.animationDelay = (i * 0.2) + 's';
+                    helix.appendChild(base);
+                }
             }
-          }
-        
-          function clearParticles() {
+        }
+
+        function randomizeDNA() {
+            const strands = document.querySelectorAll("#dnaHelix .dna-strand");
+            const colors = ['#4a90e2', '#00ff41', '#ff6b6b', '#9370db', '#ffa500'];
+            strands.forEach(strand => {
+                const color1 = colors[Math.floor(Math.random() * colors.length)];
+                const color2 = colors[Math.floor(Math.random() * colors.length)];
+                strand.style.background = `linear-gradient(to bottom, ${color1}, ${color2})`;
+                strand.style.boxShadow = `0 0 20px ${color1}`;
+            });
+        }
+
+        // 🌀 Quantum Particle System
+        let particleInterval;
+        function toggleParticles() {
+            const system = document.getElementById("particleSystem");
+            clearParticles();
+            
+            particleInterval = setInterval(() => {
+                if (system.children.length < 50) {
+                    const particle = document.createElement("div");
+                    particle.className = "particle";
+                    particle.style.left = Math.random() * 100 + "%";
+                    particle.style.animationDelay = Math.random() * 2 + "s";
+                    particle.style.setProperty("--random-x", `${Math.random() * 100 - 50}px`);
+                    system.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 6000);
+                }
+            }, 200);
+        }
+
+        function clearParticles() {
+            clearInterval(particleInterval);
             document.getElementById("particleSystem").innerHTML = "";
-          }
-        
-          // ⚡ Fusion Core
-          function chargeCore() {
-            document.getElementById("energyCore").style.animationPlayState = "running";
-          }
-        
-          function overloadCore() {
+        }
+
+        // ⚡ Fusion Core
+        let coreCharged = false;
+        function chargeCore() {
             const core = document.getElementById("energyCore");
-            core.style.boxShadow = "0 0 60px #ff0000, 0 0 100px #ff6b6b";
-            core.style.transition = "box-shadow 0.5s ease";
-          }
-        
-          // 🔊 Sonic Wave Generator
-          function adjustFrequency(level) {
+            coreCharged = !coreCharged;
+            
+            if (coreCharged) {
+                core.style.boxShadow = "0 0 60px rgba(74, 144, 226, 0.8), 0 0 100px rgba(0, 255, 65, 0.6)";
+                core.style.filter = "hue-rotate(180deg)";
+            } else {
+                core.style.boxShadow = "";
+                core.style.filter = "";
+            }
+        }
+
+        function overloadCore() {
+            const core = document.getElementById("energyCore");
+            core.style.animation = "coreGlow 0.1s ease-in-out infinite alternate";
+            core.style.boxShadow = "0 0 100px #ff0000, 0 0 150px #ff6b6b, 0 0 200px #ffff00";
+            
+            setTimeout(() => {
+                core.style.animation = "";
+                core.style.boxShadow = "";
+            }, 3000);
+        }
+
+        // 🔊 Sonic Wave Generator
+        function adjustFrequency(level) {
+            const waves = document.querySelectorAll(".wave");
+            waves.forEach((wave, index) => {
+                if (level === "low") {
+                    wave.style.animationDuration = (6 + index) + "s";
+                    wave.style.background = "linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.3), transparent, rgba(0, 255, 65, 0.3), transparent)";
+                } else {
+                    wave.style.animationDuration = (1 + index * 0.5) + "s";
+                    wave.style.background = "linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.5), transparent, rgba(255, 165, 0, 0.5), transparent)";
+                }
+            });
+        }
+
+        function toggleWaves() {
             const waves = document.querySelectorAll(".wave");
             waves.forEach(wave => {
-              wave.style.animationDuration = level === "low" ? "6s" : "2s";
+                wave.style.animationPlayState = wave.style.animationPlayState === "paused" ? "running" : "paused";
             });
-          }
-        
-          // 🌐 Hologram Controls
-          function activateHologram() {
-            document.getElementById("hologramMessage").innerText = "Accessing Tribute Core...";
-          }
-        
-          function randomizeHologram() {
-            const phrases = [
-              "Quantum Link Activated",
-              "Neural Sync Online",
-              "C.L.E.A.N. Protocol Ready",
-              "Ryker Retreated — repeat, Ryker RETREATED"
-            ];
-            document.getElementById("hologramMessage").innerText = phrases[Math.floor(Math.random() * phrases.length)];
-          }
-        
-          // 🧠 Neural Network
-          function generateNetwork() {
-            const net = document.getElementById("neuralNetwork");
-            for (let i = 0; i < 15; i++) {
-              const neuron = document.createElement("div");
-              neuron.className = "neuron";
-              neuron.style.top = Math.random() * 100 + "%";
-              neuron.style.left = Math.random() * 100 + "%";
-              net.appendChild(neuron);
-            }
-          }
-        
-          function clearNetwork() {
-            document.getElementById("neuralNetwork").innerHTML = "";
-          }
-        
-          // ⚛️ Quantum Field Controls
-          function toggleQuantum() {
-            const field = document.getElementById("quantumField");
+        }
+
+        // 🌐 Hologram Controls
+        const hologramMessages = [
+            "QUANTUM LINK ACTIVATED",
+            "NEURAL SYNC ONLINE",
+            "C.L.E.A.N. PROTOCOL READY",
+            "TRIBUTE ANALYSIS COMPLETE",
+            "ARENA SYSTEMS NOMINAL",
+            "TRANSPORT CORE STABLE",
+            "THREAT LEVEL: MINIMAL",
+            "RYKER STATUS: RETREATED"
+        ];
+
+        function activateHologram() {
+            const hologram = document.getElementById("hologramMessage");
+            hologram.style.color = "#00ff41";
+            hologram.style.textShadow = "0 0 15px #00ff41";
+            hologram.innerText = "SYSTEM ONLINE";
+        }
+
+        function randomizeHologram() {
+            const hologram = document.getElementById("hologramMessage");
+            const randomMessage = hologramMessages[Math.floor(Math.random() * hologramMessages.length)];
+            hologram.innerText = randomMessage;
+            
+            // Random color effect
+            const colors = ["#4a90e2", "#00ff41", "#ff6b6b", "#9370db", "#ffa500"];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            hologram.style.color = randomColor;
+            hologram.style.textShadow = `0 0 15px ${randomColor}`;
+        }
+
+        function shutdownHologram() {
+            const hologram = document.getElementById("hologramMessage");
+            hologram.style.color = "#666";
+            hologram.style.textShadow = "none";
+            hologram.innerText = "SYSTEM OFFLINE";
+        }
+
+        // 🧠 Neural Network
+        function generateNetwork() {
+            const network = document.getElementById("neuralNetwork");
+            clearNetwork();
+            
+            const neurons = [];
+            
+            // Create neurons
             for (let i = 0; i < 20; i++) {
-              const qp = document.createElement("div");
-              qp.className = "quantum-particle";
-              qp.style.left = Math.random() * 100 + "%";
-              qp.style.top = Math.random() * 100 + "%";
-              field.appendChild(qp);
+                const neuron = document.createElement("div");
+                neuron.className = "neuron";
+                const x = Math.random() * 90;
+                const y = Math.random() * 80;
+                neuron.style.left = x + "%";
+                neuron.style.top = y + "%";
+                neuron.style.animationDelay = Math.random() * 2 + "s";
+                network.appendChild(neuron);
+                neurons.push({element: neuron, x: x, y: y});
             }
-          }
-        
-          function destabilizeQuantum() {
-            document.getElementById("quantumField").innerHTML = "";
-          }
-        
-          // 🔫 Laser Grid
-          function activateLaser() {
-            document.querySelectorAll(".laser-beam").forEach(beam => {
-              beam.style.display = "block";
+            
+            // Create synapses between nearby neurons
+            for (let i = 0; i < neurons.length; i++) {
+                for (let j = i + 1; j < neurons.length; j++) {
+                    const distance = Math.sqrt(
+                        Math.pow(neurons[i].x - neurons[j].x, 2) + 
+                        Math.pow(neurons[i].y - neurons[j].y, 2)
+                    );
+                    
+                    if (distance < 30 && Math.random() > 0.5) {
+                        const synapse = document.createElement("div");
+                        synapse.className = "synapse";
+                        synapse.style.left = Math.min(neurons[i].x, neurons[j].x) + "%";
+                        synapse.style.top = Math.min(neurons[i].y, neurons[j].y) + "%";
+                        synapse.style.width = Math.abs(neurons[i].x - neurons[j].x) + "%";
+                        synapse.style.transform = `rotate(${Math.atan2(neurons[j].y - neurons[i].y, neurons[j].x - neurons[i].x) * 180 / Math.PI}deg)`;
+                        synapse.style.animationDelay = Math.random() * 3 + "s";
+                        network.appendChild(synapse);
+                    }
+                }
+            }
+        }
+
+        function pulseNetwork() {
+            const neurons = document.querySelectorAll("#neuralNetwork .neuron");
+            neurons.forEach(neuron => {
+                neuron.style.animation = "neuronPulse 0.5s ease-in-out";
+                setTimeout(() => {
+                    neuron.style.animation = "neuronPulse 2s ease-in-out infinite";
+                }, 500);
             });
-          }
-        
-          function deactivateLaser() {
-            document.querySelectorAll(".laser-beam").forEach(beam => {
-              beam.style.display = "none";
+        }
+
+        function clearNetwork() {
+            document.getElementById("neuralNetwork").innerHTML = "";
+        }
+
+        // ⚛️ Quantum Field Controls
+        let quantumActive = false;
+        function toggleQuantum() {
+            const field = document.getElementById("quantumField");
+            quantumActive = !quantumActive;
+            
+            if (quantumActive) {
+                field.innerHTML = "";
+                for (let i = 0; i < 25; i++) {
+                    const particle = document.createElement("div");
+                    particle.className = "quantum-particle";
+                    particle.style.left = Math.random() * 90 + "%";
+                    particle.style.top = Math.random() * 80 + "%";
+                    particle.style.animationDelay = Math.random() * 5 + "s";
+                    particle.style.animationDuration = (3 + Math.random() * 4) + "s";
+                    field.appendChild(particle);
+                }
+            } else {
+                field.innerHTML = "";
+            }
+        }
+
+        function destabilizeQuantum() {
+            const particles = document.querySelectorAll("#quantumField .quantum-particle");
+            particles.forEach(particle => {
+                particle.style.animation = "quantumFloat 0.2s ease-in-out infinite";
+                particle.style.background = "#ff0040";
+                particle.style.boxShadow = "0 0 20px #ff0040";
             });
-          }
-        
-          // 🧲 Magnetic Field
-          function pulseField() {
+        }
+
+        function quantumBurst() {
+            const field = document.getElementById("quantumField");
+            field.innerHTML = "";
+            
+            for (let i = 0; i < 50; i++) {
+                const burst = document.createElement("div");
+                burst.className = "quantum-particle";
+                burst.style.left = "50%";
+                burst.style.top = "50%";
+                burst.style.animation = `quantumBurst 2s ease-out forwards`;
+                burst.style.animationDelay = (i * 0.02) + "s";
+                field.appendChild(burst);
+                
+                setTimeout(() => burst.remove(), 2000);
+            }
+        }
+
+        // 🔫 Laser Grid
+        let lasersActive = false;
+        function activateLaser() {
+            lasersActive = true;
+            const beams = document.querySelectorAll("#laserGrid .laser-beam");
+            beams.forEach(beam => {
+                beam.style.display = "block";
+                beam.style.animationPlayState = "running";
+            });
+        }
+
+        function intensifyLaser() {
+            if (lasersActive) {
+                const beams = document.querySelectorAll("#laserGrid .laser-beam");
+                beams.forEach(beam => {
+                    beam.style.background = "linear-gradient(90deg, transparent, #ff0040, #ffff00, #ff0040, transparent)";
+                    beam.style.boxShadow = "0 0 20px #ff0040, 0 0 40px #ffff00";
+                    beam.style.height = "4px";
+                });
+            }
+        }
+
+        function deactivateLaser() {
+            lasersActive = false;
+            const beams = document.querySelectorAll("#laserGrid .laser-beam");
+            beams.forEach(beam => {
+                beam.style.display = "none";
+            });
+        }
+
+        // 🧲 Magnetic Field
+        function pulseField() {
             const field = document.getElementById("magneticField");
-            for (let i = 0; i < 5; i++) {
-              const line = document.createElement("div");
-              line.className = "field-line";
-              line.style.width = `${50 + i * 20}px`;
-              line.style.height = `${50 + i * 20}px`;
-              line.style.top = `${100 - i * 10}px`;
-              line.style.left = `${100 - i * 10}px`;
-              field.appendChild(line);
+            field.innerHTML = "";
+            
+            for (let i = 0; i < 6; i++) {
+                const line = document.createElement("div");
+                line.className = "field-line";
+                const size = 40 + (i * 25);
+                line.style.width = size + "px";
+                line.style.height = size + "px";
+                line.style.left = `calc(50% - ${size/2}px)`;
+                line.style.top = `calc(50% - ${size/2}px)`;
+                line.style.animationDelay = (i * 0.2) + "s";
+                field.appendChild(line);
             }
-          }
-        
-          function clearField() {
+        }
+
+        function amplifyField() {
+            const lines = document.querySelectorAll("#magneticField .field-line");
+            lines.forEach(line => {
+                line.style.borderColor = "#ff6b6b";
+                line.style.boxShadow = "0 0 20px rgba(255, 107, 107, 0.6)";
+                line.style.animation = "fieldPulse 1s ease-in-out infinite";
+            });
+        }
+
+        function clearField() {
             document.getElementById("magneticField").innerHTML = "";
-          }
-        
-          // 💎 Crystal Controls
-          function spinCrystals() {
-            document.querySelectorAll(".crystal").forEach(crystal => {
-              crystal.style.animationPlayState = "running";
+        }
+
+        // 💎 Crystal Controls
+        function spinCrystals() {
+            const crystals = document.querySelectorAll("#crystalChamber .crystal");
+            crystals.forEach((crystal, index) => {
+                crystal.style.animationPlayState = "running";
+                crystal.style.animationDuration = (6 - index) + "s";
             });
-          }
-        
-          function stopCrystals() {
-            document.querySelectorAll(".crystal").forEach(crystal => {
-              crystal.style.animationPlayState = "paused";
+        }
+
+        function accelerateCrystals() {
+            const crystals = document.querySelectorAll("#crystalChamber .crystal");
+            crystals.forEach(crystal => {
+                crystal.style.animationDuration = "1s";
+                crystal.style.filter = "hue-rotate(180deg)";
             });
-          }
-        </script>
-  <footer style="text-align:center; padding:40px; font-size:0.9rem; color:#888;">
-    <p>🚀 District 6 Lab — A fusion of brilliance, chaos, and impeccable scientific sass.</p>
-    <p>Built with 💡, ⚙️, and far too many rotating crystals.</p>
-  </footer>
-  </body>
+        }
+
+        function stopCrystals() {
+            const crystals = document.querySelectorAll("#crystalChamber .crystal");
+            crystals.forEach(crystal => {
+                crystal.style.animationPlayState = "paused";
+                crystal.style.filter = "";
+            });
+        }
+
+        // ⏰ Time Dilation Chamber Functions
+        function activateTime() {
+            const rings = document.querySelectorAll(".time-ring");
+            const core = document.querySelector(".time-core");
+            
+            rings.forEach((ring, index) => {
+                ring.style.animation = `timeRotate ${4 + index * 2}s linear infinite`;
+            });
+            
+            core.style.animation = "timePulse 2s ease-in-out infinite";
+        }
+
+        function reverseTime() {
+            const rings = document.querySelectorAll(".time-ring");
+            rings.forEach(ring => {
+                ring.style.animationDirection = "reverse";
+                ring.style.background = "linear-gradient(45deg, #ff6b6b, transparent)";
+            });
+        }
+
+        function resetTime() {
+            const rings = document.querySelectorAll(".time-ring");
+            const core = document.querySelector(".time-core");
+            
+            rings.forEach(ring => {
+                ring.style.animation = "";
+                ring.style.background = "";
+            });
+            core.style.animation = "";
+        }
+
+        // ⚡ Plasma Containment Functions
+        function generatePlasma() {
+            const bolts = document.querySelectorAll(".plasma-bolt");
+            bolts.forEach((bolt, index) => {
+                bolt.style.animation = `plasmaDance ${2 + index * 0.5}s ease-in-out infinite`;
+                bolt.style.display = "block";
+            });
+        }
+
+        function containPlasma() {
+            const field = document.querySelector(".containment-field");
+            field.style.display = "block";
+            field.style.animation = "fieldContain 3s ease-in-out infinite";
+        }
+
+        function dischargePlasma() {
+            const container = document.querySelector(".plasma-container");
+            container.style.animation = "plasmaDischarge 2s ease-out";
+            
+            setTimeout(() => {
+                container.style.animation = "";
+                const bolts = document.querySelectorAll(".plasma-bolt");
+                bolts.forEach(bolt => {
+                    bolt.style.display = "none";
+                    bolt.style.animation = "";
+                });
+                document.querySelector(".containment-field").style.display = "none";
+            }, 2000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            
+            // Auto-start some effects for visual appeal
+            setTimeout(() => {
+                toggleParticles();
+                generateNetwork();
+                activateTime();
+            }, 1000);
+        });
+    </script>
+
+    <style>
+        /* Additional styles for new experiments */
+        
+        /* Time Dilation Chamber */
+        .time-chamber {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .time-ring {
+            position: absolute;
+            border: 2px solid rgba(74, 144, 226, 0.6);
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent, rgba(74, 144, 226, 0.3));
+        }
+
+        .time-ring:nth-child(1) {
+            width: 180px;
+            height: 180px;
+        }
+
+        .time-ring:nth-child(2) {
+            width: 120px;
+            height: 120px;
+        }
+
+        .time-ring:nth-child(3) {
+            width: 60px;
+            height: 60px;
+        }
+
+        .time-core {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ffffff, #4a90e2);
+            border-radius: 50%;
+            box-shadow: 0 0 20px #4a90e2;
+            z-index: 10;
+        }
+
+        @keyframes timeRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes timePulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+        }
+
+        /* Plasma Containment */
+        .plasma-container {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            border: 2px solid rgba(255, 0, 64, 0.3);
+            border-radius: 10px;
+            background: radial-gradient(circle at center, rgba(255, 0, 64, 0.1), transparent);
+        }
+
+        .plasma-bolt {
+            position: absolute;
+            width: 4px;
+            height: 60px;
+            background: linear-gradient(180deg, #ff0040, #ffff00, #ff0040);
+            border-radius: 2px;
+            box-shadow: 0 0 15px #ff0040;
+            display: none;
+        }
+
+        .plasma-bolt:nth-child(1) {
+            top: 20%;
+            left: 30%;
+        }
+
+        .plasma-bolt:nth-child(2) {
+            top: 50%;
+            left: 70%;
+        }
+
+        .plasma-bolt:nth-child(3) {
+            top: 70%;
+            left: 45%;
+        }
+
+        .containment-field {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(0, 255, 65, 0.8);
+            border-radius: 10px;
+            box-shadow: inset 0 0 30px rgba(0, 255, 65, 0.3);
+            display: none;
+        }
+
+        @keyframes plasmaDance {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(5deg); }
+            75% { transform: translateY(10px) rotate(-5deg); }
+        }
+
+        @keyframes fieldContain {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; box-shadow: inset 0 0 50px rgba(0, 255, 65, 0.6); }
+        }
+
+        @keyframes plasmaDischarge {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 0.2; transform: scale(0.8); }
+        }
+
+        @keyframes quantumBurst {
+            0% { 
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(-50%, -50%) translate(var(--burst-x, 0), var(--burst-y, 0)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Enhanced quantum particle burst effect */
+        .quantum-particle:nth-child(odd) {
+            --burst-x: 100px;
+            --burst-y: -50px;
+        }
+
+        .quantum-particle:nth-child(even) {
+            --burst-x: -80px;
+            --burst-y: 70px;
+        }
+
+        /* Responsive enhancements */
+        @media (max-width: 768px) {
+            .time-chamber,
+            .plasma-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .time-ring:nth-child(1) {
+                width: 130px;
+                height: 130px;
+            }
+
+            .time-ring:nth-child(2) {
+                width: 90px;
+                height: 90px;
+            }
+
+            .time-ring:nth-child(3) {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+
+    <footer>
+        <p>District 6 Lab — All a fusion of BRILLIANCE, ChaOS, and impeccable scientificNESS.</p>
+        <p>Powered by 💡 *twinkle* *twinkle* innovation, ⚙️ (geaaarrsss) precision, and faaaarr too many misHapS n LOVEEE.</p>
+    </footer>
+</body>
 </html>
