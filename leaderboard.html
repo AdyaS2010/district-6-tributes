@@ -748,6 +748,7 @@
         let konamiCode = [38, 38, 37, 39, 37, 39, 83, 67]; // Up, Up, Left, Right, Left, Right, S, C
         let konamiIndex = 0;
         let easterEggActive = false;
+        let konamiTimeout;
 
         function createStars() {
             const starsContainer = document.getElementById('stars');
@@ -763,6 +764,34 @@
             }
         }
 
+        // Easter Egg Konami Code Detection
+        document.addEventListener('keydown', function(e) {
+            console.log('Key pressed:', e.keyCode, 'Expected:', konamiCode[konamiIndex], 'Index:', konamiIndex);
+            
+            // Clear existing timeout
+            clearTimeout(konamiTimeout);
+            
+            if (e.keyCode === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                console.log('Correct key! New index:', konamiIndex);
+                
+                if (konamiIndex === konamiCode.length) {
+                    console.log('Easter egg activated!');
+                    activateEasterEgg();
+                    konamiIndex = 0;
+                } else {
+                    // Reset after 2 seconds of inactivity
+                    konamiTimeout = setTimeout(() => {
+                        konamiIndex = 0;
+                        console.log('Konami sequence reset due to timeout');
+                    }, 2000);
+                }
+            } else {
+                console.log('Wrong key, resetting');
+                konamiIndex = 0;
+            }
+        });
+        
         function createMatrixRain() {
             const matrixRain = document.getElementById('matrixRain');
             const characters = 'D6TRIBUTESGAMES01010110DISTRICTARENACODEWINNERVICTORY';
