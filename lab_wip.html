@@ -290,7 +290,23 @@
             animation-delay: -2s;
         }
 
+        .dna-base {
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: baseRotate 4s linear infinite;
+        }
+
         @keyframes dnaRotate {
+            0% { transform: translateX(-50%) rotateY(0deg); }
+            100% { transform: translateX(-50%) rotateY(360deg); }
+        }
+
+        @keyframes baseRotate {
             0% { transform: translateX(-50%) rotateY(0deg); }
             100% { transform: translateX(-50%) rotateY(360deg); }
         }
@@ -570,6 +586,64 @@
             75% { transform: translate(80px, 10px) scale(1.1); }
         }
 
+        /* Laser Grid */
+        .laser-grid {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .laser-beam {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0040, transparent);
+            box-shadow: 0 0 10px #ff0040, 0 0 20px #ff0040;
+            animation: laserSweep 3s linear infinite;
+        }
+
+        .laser-beam.vertical {
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #ff0040, transparent);
+            animation: laserSweepVertical 4s linear infinite;
+        }
+
+        @keyframes laserSweep {
+            0% { left: -100%; width: 0%; }
+            50% { left: 0%; width: 100%; }
+            100% { left: 100%; width: 0%; }
+        }
+
+        @keyframes laserSweepVertical {
+            0% { top: -100%; height: 0%; }
+            50% { top: 0%; height: 100%; }
+            100% { top: 100%; height: 0%; }
+        }
+
+        /* Magnetic Field */
+        .magnetic-field {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            border-radius: 10px;
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1), transparent);
+        }
+
+        .field-line {
+            position: absolute;
+            border: 1px solid rgba(138, 43, 226, 0.6);
+            border-radius: 50px;
+            animation: fieldPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes fieldPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
         /* Back to home button */
         .back-home {
             position: fixed;
@@ -599,6 +673,42 @@
             width: 24px;
             height: 24px;
             fill: #4a90e2;
+        }
+
+        /* Crystal Formation */
+        .crystal-formation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .crystal {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #4a90e2, #87ceeb, #00ff41);
+            clip-path: polygon(50% 0%, 0% 50%, 50% 100%, 100% 50%);
+            animation: crystalSpin 6s linear infinite;
+            margin: 0 10px;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
+        }
+
+        .crystal:nth-child(2) {
+            animation-delay: -2s;
+            background: linear-gradient(45deg, #ff6b6b, #ff9999, #ffcc99);
+        }
+
+        .crystal:nth-child(3) {
+            animation-delay: -4s;
+            background: linear-gradient(45deg, #9370db, #ba55d3, #dda0dd);
+        }
+
+        @keyframes crystalSpin {
+            0% { transform: rotateY(0deg) rotateX(0deg); }
+            100% { transform: rotateY(360deg) rotateX(360deg); }
         }
 
         /* Responsive design */
@@ -695,7 +805,7 @@
             <div class="experiment-card">
                 <h3 class="experiment-title">DNA Helix Scanner</h3>
                 <p class="experiment-description">Genetic sequencing visualization for tribute enhancement protocols</p>
-                <div class="dna-helix">
+                <div class="dna-helix" id="dnaHelix">
                     <div class="dna-strand"></div>
                     <div class="dna-strand"></div>
                 </div>
@@ -746,88 +856,237 @@
 
             <!-- Hologram Display -->
             <div class="experiment-card">
-                <h3 class="experiment-title">Holographic Interface</h3>
-                <p class="experiment-description">3D projection system for tribute training simulations</p>
-                <div class="hologram-display">
-                    <div class="hologram-text" id="hologramText">DISTRICT 6</div>
-                    <div class="hologram-lines"></div>
-                </div>
-                <div class="lab-controls">
-                    <button class="lab-button" onclick="changeHologram()">Change</button>
-                    <button class="lab-button" onclick="stabilizeHologram()">Stabilize</button>
-                </div>
+              <h3 class="experiment-title">Holographic Interface</h3>
+              <p class="experiment-description">3D projection system for tribute training simulations</p>
+              <div class="hologram-display">
+                <div class="hologram-text" id="hologramMessage">Initializing...</div>
+                <div class="hologram-lines"></div>
+              </div>
+              <div class="lab-controls">
+                <button class="lab-button" onclick="activateHologram()">Activate</button>
+                <button class="lab-button" onclick="randomizeHologram()">Randomize</button>
+              </div>
             </div>
 
             <!-- Neural Network -->
             <div class="experiment-card">
-                <h3 class="experiment-title">Neural Network AI</h3>
-                <p class="experiment-description">Advanced AI processing for tribute behavior prediction</p>
-                <div class="neural-network" id="neuralNetwork">
-                    <!-- Neurons and synapses generated by JavaScript -->
-                </div>
-                <div class="lab-controls">
-                    <button class="lab-button" onclick="trainNetwork()">Train</button>
-                    <button class="lab-button" onclick="resetNetwork()">Reset</button>
-                </div>
+              <h3 class="experiment-title">Neural Network Mapper</h3>
+              <p class="experiment-description">Mapping cognitive tribute patterns using electro-nanopulses</p>
+              <div class="neural-network" id="neuralNetwork">
+                <!-- Neurons and synapses will be generated by JavaScript -->
+              </div>
+              <div class="lab-controls">
+                <button class="lab-button" onclick="generateNetwork()">Generate</button>
+                <button class="lab-button" onclick="clearNetwork()">Reset</button>
+              </div>
             </div>
 
             <!-- Quantum Field -->
             <div class="experiment-card">
-                <h3 class="experiment-title">Quantum Field Manipulator</h3>
-                <p class="experiment-description">Reality distortion field for advanced arena hazards</p>
-                <div class="quantum-field" id="quantumField">
-                    <!-- Quantum particles generated by JavaScript -->
-                </div>
-                <div class="lab-controls">
-                    <button class="lab-button" onclick="createQuantumField()">Create Field</button>
-                    <button class="lab-button" onclick="collapseField()">Collapse</button>
-                </div>
+              <h3 class="experiment-title">Quantum Field Stabilizer</h3>
+              <p class="experiment-description">Particle wave harmonization to improve transport core performance</p>
+              <div class="quantum-field" id="quantumField"></div>
+              <div class="lab-controls">
+                <button class="lab-button" onclick="toggleQuantum()">Stabilize</button>
+                <button class="lab-button" onclick="destabilizeQuantum()">Disrupt</button>
+              </div>
             </div>
 
-            <!-- System Monitor -->
+            <!-- Laser Grid -->
             <div class="experiment-card">
-                <h3 class="experiment-title">System Monitor</h3>
-                <p class="experiment-description">Real-time monitoring of all lab systems and experiments</p>
-                <div id="systemMonitor" style="font-family: 'Orbitron', monospace; color: #4a90e2; font-size: 0.9rem; line-height: 1.6; text-align: left; padding: 20px;">
-                    <div>CPU: <span id="cpuUsage">45.2%</span></div>
-                    <div>MEMORY: <span id="memUsage">67.8%</span></div>
-                    <div>POWER: <span id="powerLevel">89.4%</span></div>
-                    <div>QUANTUM: <span id="quantumStability">92.1%</span></div>
-                    <div>NEURAL: <span id="neuralActivity">78.5%</span></div>
-                    <div>STATUS: <span id="systemStatus" style="color: #00ff41;">OPERATIONAL</span></div>
-                </div>
-                <div class="lab-controls">
-                    <button class="lab-button" onclick="runDiagnostics()">Diagnose</button>
-                    <button class="lab-button" onclick="emergencyShutdown()">Emergency</button>
-                </div>
+              <h3 class="experiment-title">Laser Grid Defense</h3>
+              <p class="experiment-description">Tribute training obstacle system with reactive beams</p>
+              <div class="laser-grid">
+                <div class="laser-beam"></div>
+                <div class="laser-beam vertical"></div>
+                <div class="laser-beam vertical"></div>
+              </div>
+              <div class="lab-controls">
+                <button class="lab-button" onclick="activateLaser()">Activate</button>
+                <button class="lab-button" onclick="deactivateLaser()">Deactivate</button>
+              </div>
             </div>
-        </div>
-    </div>
 
-    <div class="back-home" onclick="goHome()">
-        <svg viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-        </svg>
-    </div>
 
-    <script>
-        let experimentsActive = {
-            particles: false,
-            dna: true,
-            neural: false,
-            quantum: false
-        };
+            <!-- Magnetic Field -->
+            <div class="experiment-card">
+              <h3 class="experiment-title">Magnetic Field Generator</h3>
+              <p class="experiment-description">Induction chamber for molecular alignment protocols</p>
+              <div class="magnetic-field" id="magneticField"></div>
+              <div class="lab-controls">
+                <button class="lab-button" onclick="pulseField()">Pulse</button>
+                <button class="lab-button" onclick="clearField()">Clear</button>
+              </div>
+            </div>
 
-        let hologramMessages = ['DISTRICT 6', 'TRIBUTE ANALYSIS', 'ARENA ONLINE', 'VICTORY PROTOCOL', 'SYSTEM ACTIVE'];
-        let currentHologram = 0;
+            <!-- Crystal Formation -->
+            <div class="experiment-card">
+              <h3 class="experiment-title">Crystal Growth Chamber</h3>
+              <p class="experiment-description">Geometric mineral simulation for tribute armor optimization</p>
+              <div class="crystal-formation">
+                <div class="crystal"></div>
+                <div class="crystal"></div>
+                <div class="crystal"></div>
+              </div>
+              <div class="lab-controls">
+                <button class="lab-button" onclick="spinCrystals()">Spin</button>
+                <button class="lab-button" onclick="stopCrystals()">Stop</button>
+              </div>
+            </div>
 
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const numStars = 150;
+            <div class="back-home" onclick="window.location.href='index.html'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              </svg>
+            </div>
 
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.
+          <script>
+          // 🧬 DNA Helix Functions
+          let dnaActive = false;
+          function toggleDNA() {
+            const helix = document.getElementById("dnaHelix");
+            dnaActive = !dnaActive;
+            helix.style.transform = dnaActive ? "rotate(360deg)" : "rotate(0deg)";
+            helix.style.transition = "transform 2s ease-in-out";
+          }
+        
+          function randomizeDNA() {
+            const strands = document.querySelectorAll("#dnaHelix .dna-strand");
+            strands.forEach(strand => {
+              strand.style.background = `linear-gradient(to bottom, #${Math.floor(Math.random()*16777215).toString(16)}, #${Math.floor(Math.random()*16777215).toString(16)})`;
+            });
+          }
+        
+          // 🌀 Quantum Particle System
+          function toggleParticles() {
+            const system = document.getElementById("particleSystem");
+            for (let i = 0; i < 30; i++) {
+              const p = document.createElement("div");
+              p.classList.add("particle");
+              p.style.left = Math.random() * 100 + "%";
+              p.style.top = Math.random() * 100 + "%";
+              p.style.setProperty("--random-x", `${Math.random() * 40 - 20}px`);
+              system.appendChild(p);
+            }
+          }
+        
+          function clearParticles() {
+            document.getElementById("particleSystem").innerHTML = "";
+          }
+        
+          // ⚡ Fusion Core
+          function chargeCore() {
+            document.getElementById("energyCore").style.animationPlayState = "running";
+          }
+        
+          function overloadCore() {
+            const core = document.getElementById("energyCore");
+            core.style.boxShadow = "0 0 60px #ff0000, 0 0 100px #ff6b6b";
+            core.style.transition = "box-shadow 0.5s ease";
+          }
+        
+          // 🔊 Sonic Wave Generator
+          function adjustFrequency(level) {
+            const waves = document.querySelectorAll(".wave");
+            waves.forEach(wave => {
+              wave.style.animationDuration = level === "low" ? "6s" : "2s";
+            });
+          }
+        
+          // 🌐 Hologram Controls
+          function activateHologram() {
+            document.getElementById("hologramMessage").innerText = "Accessing Tribute Core...";
+          }
+        
+          function randomizeHologram() {
+            const phrases = [
+              "Quantum Link Activated",
+              "Neural Sync Online",
+              "C.L.E.A.N. Protocol Ready",
+              "Ryker Retreated — repeat, Ryker RETREATED"
+            ];
+            document.getElementById("hologramMessage").innerText = phrases[Math.floor(Math.random() * phrases.length)];
+          }
+        
+          // 🧠 Neural Network
+          function generateNetwork() {
+            const net = document.getElementById("neuralNetwork");
+            for (let i = 0; i < 15; i++) {
+              const neuron = document.createElement("div");
+              neuron.className = "neuron";
+              neuron.style.top = Math.random() * 100 + "%";
+              neuron.style.left = Math.random() * 100 + "%";
+              net.appendChild(neuron);
+            }
+          }
+        
+          function clearNetwork() {
+            document.getElementById("neuralNetwork").innerHTML = "";
+          }
+        
+          // ⚛️ Quantum Field Controls
+          function toggleQuantum() {
+            const field = document.getElementById("quantumField");
+            for (let i = 0; i < 20; i++) {
+              const qp = document.createElement("div");
+              qp.className = "quantum-particle";
+              qp.style.left = Math.random() * 100 + "%";
+              qp.style.top = Math.random() * 100 + "%";
+              field.appendChild(qp);
+            }
+          }
+        
+          function destabilizeQuantum() {
+            document.getElementById("quantumField").innerHTML = "";
+          }
+        
+          // 🔫 Laser Grid
+          function activateLaser() {
+            document.querySelectorAll(".laser-beam").forEach(beam => {
+              beam.style.display = "block";
+            });
+          }
+        
+          function deactivateLaser() {
+            document.querySelectorAll(".laser-beam").forEach(beam => {
+              beam.style.display = "none";
+            });
+          }
+        
+          // 🧲 Magnetic Field
+          function pulseField() {
+            const field = document.getElementById("magneticField");
+            for (let i = 0; i < 5; i++) {
+              const line = document.createElement("div");
+              line.className = "field-line";
+              line.style.width = `${50 + i * 20}px`;
+              line.style.height = `${50 + i * 20}px`;
+              line.style.top = `${100 - i * 10}px`;
+              line.style.left = `${100 - i * 10}px`;
+              field.appendChild(line);
+            }
+          }
+        
+          function clearField() {
+            document.getElementById("magneticField").innerHTML = "";
+          }
+        
+          // 💎 Crystal Controls
+          function spinCrystals() {
+            document.querySelectorAll(".crystal").forEach(crystal => {
+              crystal.style.animationPlayState = "running";
+            });
+          }
+        
+          function stopCrystals() {
+            document.querySelectorAll(".crystal").forEach(crystal => {
+              crystal.style.animationPlayState = "paused";
+            });
+          }
+        </script>
+  <footer style="text-align:center; padding:40px; font-size:0.9rem; color:#888;">
+    <p>🚀 District 6 Lab — A fusion of brilliance, chaos, and impeccable scientific sass.</p>
+    <p>Built with 💡, ⚙️, and far too many rotating crystals.</p>
+  </footer>
+  </body>
+</html>
