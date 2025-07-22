@@ -1,88 +1,528 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Arena | District 6 Tributes</title>
-  <link rel="stylesheet" href="style.css"> <!-- Assuming you have a shared style.css -->
-  <style>
-    body {
-      background: url("images/overall.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      font-family: "Segoe UI", sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>District 6 - The Arena</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Electrolize:wght@400&family=Audiowide:wght@400&family=Saira+Stencil+One:wght@400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    h1 {
-      margin-top: 60px;
-      font-size: 48px;
-      text-shadow: 2px 2px 8px #000;
-    }
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
 
-    .arena-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      margin-top: 50px;
-    }
+        /* Background animations */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(26, 50, 120, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(26, 50, 120, 0.3) 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: -2;
+        }
 
-    .tribute-image {
-      border: 4px solid #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.3);
-      max-width: 300px;
-      transition: transform 0.3s ease;
-    }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
 
-    .tribute-image:hover {
-      transform: scale(1.05);
-    }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #4a90e2;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
 
-    .caption {
-      margin-top: 10px;
-      font-size: 18px;
-      color: #eee;
-    }
-  </style>
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            border: 2px solid #4a90e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 18px;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .logo-text {
+            font-family: 'Audiowide', monospace;
+            font-size: 24px;
+            font-weight: 400;
+            color: #ffffff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-item {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #a0a0a0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: #4a90e2;
+            text-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4a90e2;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover::after, .nav-item.active::after {
+            width: 100%;
+        }
+
+        /* Page header */
+        .page-header {
+            text-align: center;
+            padding: 80px 40px 40px;
+            position: relative;
+        }
+
+        .page-title {
+            font-family: 'Saira Stencil One', monospace;
+            font-size: 4rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4a90e2, #87ceeb, #ffffff, #4a90e2);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(74, 144, 226, 0.8);
+            letter-spacing: 8px;
+            filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.6));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .arena-icon {
+            font-size: 3.5rem;
+            color: #4a90e2;
+            text-shadow: 0 0 30px rgba(74, 144, 226, 0.8);
+        }
+
+        .page-subtitle {
+            font-family: 'Electrolize', monospace;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #b0b0b0;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(176, 176, 176, 0.3);
+        }
+
+        /* Arena container */
+        .arena-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+        }
+
+        /* Arena grid */
+        .arena-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            justify-items: center;
+            margin-top: 40px;
+        }
+
+        .arena-card {
+            background: rgba(20, 30, 50, 0.6);
+            border: 2px solid rgba(74, 144, 226, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 350px;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .arena-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .arena-card:hover::before {
+            left: 100%;
+        }
+
+        .arena-card:hover {
+            border-color: rgba(74, 144, 226, 0.6);
+            box-shadow: 0 20px 40px rgba(74, 144, 226, 0.2);
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .arena-image-container {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            border: 2px solid rgba(74, 144, 226, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .arena-card:hover .arena-image-container {
+            border-color: #4a90e2;
+            box-shadow: 0 0 25px rgba(74, 144, 226, 0.4);
+        }
+
+        .arena-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .arena-card:hover .arena-image {
+            transform: scale(1.05);
+        }
+
+        .arena-title {
+            font-family: 'Electrolize', monospace;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .tribute-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            color: #4a90e2;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        /* Back to home button */
+        .back-home {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.3), rgba(74, 144, 226, 0.1));
+            border: 2px solid #4a90e2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+            z-index: 1000;
+        }
+
+        .back-home:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+        }
+
+        .back-home svg {
+            width: 24px;
+            height: 24px;
+            fill: #4a90e2;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .arena-icon {
+                font-size: 2.5rem;
+            }
+
+            .page-subtitle {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+
+            .arena-container {
+                padding: 20px 20px 60px;
+            }
+
+            .arena-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .arena-card {
+                max-width: 100%;
+            }
+
+            .arena-image-container {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .arena-icon {
+                font-size: 2rem;
+            }
+
+            .page-subtitle {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+
+            .arena-image-container {
+                height: 160px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="background"></div>
+    <div class="stars" id="stars"></div>
 
-  <h1>🏛️ The Arena</h1>
-  <p style="font-size: 20px;">Explore the battleground of brilliance below</p>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-box">D6</div>
+            <div class="logo-text">District 6 Transportation</div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="tributes.html" class="nav-item">Tributes</a>
+            <a href="arena.html" class="nav-item active">Arena</a>
+            <a href="leaderboard.html" class="nav-item">Leaderboard</a>
+            <a href="lab.html" class="nav-item">Lab</a>
+        </nav>
+    </header>
 
-  <div class="arena-gallery">
-    <div>
-      <img src="images/leaderboard.jpg" alt="Tribute 4" class="tribute-image">
-      <div class="caption">Tribute 4</div>
+    <div class="page-header">
+        <h1 class="page-title">
+            <span class="arena-icon">🏛️</span>
+            THE ARENA
+        </h1>
+        <p class="page-subtitle">Explore the battleground of brilliance below</p>
     </div>
-    <div>
-      <img src="images/overall.jpg" alt="Tribute 4" class="tribute-image">
-      <div class="caption">Tribute 4</div>
-    </div>
-    <div>
-      <img src="images/1.jpg" alt="Tribute 1" class="tribute-image">
-      <div class="caption">Tribute 1</div>
-    </div>
-    <div>
-      <img src="images/2.jpg" alt="Tribute 2" class="tribute-image">
-      <div class="caption">Tribute 2</div>
-    </div>
-    <div>
-      <img src="images/3.jpg" alt="Tribute 3" class="tribute-image">
-      <div class="caption">Tribute 3</div>
-    </div>
-    <div>
-      <img src="images/4.jpg" alt="Tribute 4" class="tribute-image">
-      <div class="caption">Tribute 4</div>
-    </div>
-    <div>
-      <img src="images/a.jpg" alt="Tribute 4" class="tribute-image">
-      <div class="caption">Tribute 4</div>
-    </div>
-    <!-- Add more tribute blocks as needed -->
-  </div>
 
+    <div class="arena-container">
+        <div class="arena-grid">
+            <div class="arena-card">
+                <div class="arena-image-container">
+                    <img src="https://i.imgur.com/YourImage1.jpg" alt="Tribute 4" class="arena-image">
+                </div>
+                <h3 class="arena-title">Battle Station Alpha</h3>
+                <div class="tribute-label">Tribute 4</div>
+            </div>
+
+            <div class="arena-card">
+                <div class="arena-image-container">
+                    <img src="https://i.imgur.com/YourImage2.jpg" alt="Tribute 4" class="arena-image">
+                </div>
+                <h3 class="arena-title">Combat Zone Beta</h3>
+                <div class="tribute-label">Tribute 4</div>
+            </div>
+
+            <div class="arena-card">
+                <div class="arena-image-container">
+                    <img src="https://i.imgur.com/YourImage3.jpg" alt="Tribute 1" class="arena-image">
+                </div>
+                <h3 class="arena-title">Victory Platform</h3>
+                <div class="tribute-label">Tribute 1</div>
+            </div>
+
+            <div class="arena-card">
+                <div class="arena-image-container">
+                    <img src="https://i.imgur.com/YourImage4.jpg" alt="Tribute 2" class="arena-image">
+                </div>
+                <h3 class="arena-title">Challenge Arena</h3>
+                <div class="tribute-label">Tribute 2</div>
+            </div>
+
+            <div class="arena-card">
+                <div class="arena-image-container">
+                    <img src="https://i.imgur.com/YourImage5.jpg" alt="Tribute 3" class="arena-image">
+                </div>
+                <h3 class="arena-title">Strategy Center</h3>
+                <div class="tribute-label">Tribute 3</div>
+            </div>
+
+            <div class="arena-card">
+                <div class="arena-image-container">
+                    <img src="https://i.imgur.com/YourImage6.jpg" alt="Tribute 4" class="arena-image">
+                </div>
+                <h3 class="arena-title">Final Battleground</h3>
+                <div class="tribute-label">Tribute 4</div>
+            </div>
+
+            <div class="arena-card">
+                <div class="arena-image-container">
+                    <img src="https://i.imgur.com/YourImage7.jpg" alt="Tribute 4" class="arena-image">
+                </div>
+                <h3 class="arena-title">Elite Training Ground</h3>
+                <div class="tribute-label">Tribute 4</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-home" onclick="goHome()">
+        <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </div>
+
+    <script>
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function goHome() {
+            // Navigate back to home page
+            window.location.href = 'index.html';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+        });
+
+        // Interactive star effects
+        document.addEventListener('mousemove', function(e) {
+            const stars = document.querySelectorAll('.star');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            stars.forEach((star, index) => {
+                const speed = (index % 5 + 1) * 0.5;
+                const xOffset = (x - 0.5) * speed;
+                const yOffset = (y - 0.5) * speed;
+                
+                star.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+    </script>
 </body>
 </html>
