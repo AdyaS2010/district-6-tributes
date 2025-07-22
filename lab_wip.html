@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>District 6 - The Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Electrolize:wght@400&family=Audiowide:wght@400&family=Saira+Stencil+One:wght@400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Background animations */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(26, 50, 120, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(26, 50, 120, 0.3) 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: -2;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #4a90e2;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            border: 2px solid #4a90e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 18px;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .logo-text {
+            font-family: 'Audiowide', monospace;
+            font-size: 24px;
+            font-weight: 400;
+            color: #ffffff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-item {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #a0a0a0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: #4a90e2;
+            text-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4a90e2;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover::after, .nav-item.active::after {
+            width: 100%;
+        }
+
+        /* Page header */
+        .page-header {
+            text-align: center;
+            padding: 80px 40px 40px;
+            position: relative;
+        }
+
+        .page-title {
+            font-family: 'Saira Stencil One', monospace;
+            font-size: 4rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4a90e2, #87ceeb, #00ff41, #ff6b6b, #4a90e2);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbowShift 3s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(74, 144, 226, 0.8);
+            letter-spacing: 8px;
+            filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.6));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        @keyframes rainbowShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .lab-icon {
+            font-size: 3.5rem;
+            color: #4a90e2;
+            text-shadow: 0 0 30px rgba(74, 144, 226, 0.8);
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); filter: hue-rotate(180deg); }
+        }
+
+        .page-subtitle {
+            font-family: 'Electrolize', monospace;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #b0b0b0;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(176, 176, 176, 0.3);
+        }
+
+        /* Lab container */
+        .lab-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+        }
+
+        /* Experiment grid */
+        .experiment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .experiment-card {
+            background: rgba(20, 30, 50, 0.6);
+            border: 2px solid rgba(74, 144, 226, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            min-height: 300px;
+        }
+
+        .experiment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .experiment-card:hover::before {
+            left: 100%;
+        }
+
+        .experiment-card:hover {
+            border-color: rgba(74, 144, 226, 0.6);
+            box-shadow: 0 20px 40px rgba(74, 144, 226, 0.2);
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .experiment-title {
+            font-family: 'Electrolize', monospace;
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        .experiment-description {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* DNA Helix Experiment */
+        .dna-helix {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .dna-strand {
+            position: absolute;
+            width: 4px;
+            height: 200px;
+            background: linear-gradient(to bottom, #4a90e2, #00ff41, #ff6b6b, #4a90e2);
+            border-radius: 2px;
+            animation: dnaRotate 4s linear infinite;
+        }
+
+        .dna-strand:nth-child(1) {
+            left: 50%;
+            transform-origin: center;
+        }
+
+        .dna-strand:nth-child(2) {
+            right: 50%;
+            transform-origin: center;
+            animation-delay: -2s;
+        }
+
+        @keyframes dnaRotate {
+            0% { transform: translateX(-50%) rotateY(0deg); }
+            100% { transform: translateX(-50%) rotateY(360deg); }
+        }
+
+        /* Particle System */
+        .particle-system {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1), transparent);
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #4a90e2;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #4a90e2;
+            animation: particleFloat 6s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(220px) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20px) translateX(var(--random-x));
+                opacity: 0;
+            }
+        }
+
+        /* Energy Core */
+        .energy-core {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            position: relative;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.3), rgba(0, 255, 65, 0.2), transparent);
+            border-radius: 50%;
+            animation: coreGlow 2s ease-in-out infinite alternate;
+        }
+
+        .energy-core::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, #4a90e2, transparent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: coreRotate 3s linear infinite;
+        }
+
+        .energy-core::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40%;
+            height: 40%;
+            background: #ffffff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px #ffffff;
+            animation: corePulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes coreGlow {
+            0% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.5); }
+            100% { box-shadow: 0 0 40px rgba(74, 144, 226, 0.8), 0 0 60px rgba(0, 255, 65, 0.4); }
+        }
+
+        @keyframes coreRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes corePulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        /* Wave Generator */
+        .wave-generator {
+            width: 100%;
+            height: 150px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(0, 255, 65, 0.1));
+            border-radius: 10px;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(74, 144, 226, 0.3), 
+                transparent, 
+                rgba(0, 255, 65, 0.3), 
+                transparent);
+            animation: waveMove 4s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -1s;
+            opacity: 0.7;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: -2s;
+            opacity: 0.4;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(50%); }
+        }
+
+        /* Hologram Display */
+        .hologram-display {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            border: 2px solid rgba(74, 144, 226, 0.5);
+            border-radius: 10px;
+            background: rgba(74, 144, 226, 0.05);
+            overflow: hidden;
+        }
+
+        .hologram-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            color: #4a90e2;
+            text-shadow: 0 0 10px #4a90e2;
+            animation: hologramFlicker 3s linear infinite;
+        }
+
+        .hologram-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(74, 144, 226, 0.1) 2px,
+                rgba(74, 144, 226, 0.1) 4px
+            );
+            animation: hologramScan 2s linear infinite;
+        }
+
+        @keyframes hologramFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes hologramScan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        /* Neural Network */
+        .neural-network {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neuron {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #4a90e2;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #4a90e2;
+            animation: neuronPulse 2s ease-in-out infinite;
+        }
+
+        .synapse {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #4a90e2, transparent, #00ff41);
+            animation: synapseFire 3s linear infinite;
+        }
+
+        @keyframes neuronPulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        @keyframes synapseFire {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Interactive Controls */
+        .lab-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .lab-button {
+            padding: 10px 20px;
+            background: rgba(74, 144, 226, 0.2);
+            border: 2px solid #4a90e2;
+            border-radius: 25px;
+            color: #4a90e2;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .lab-button:hover {
+            background: rgba(74, 144, 226, 0.3);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+            transform: scale(1.05);
+        }
+
+        .lab-button.active {
+            background: #4a90e2;
+            color: #ffffff;
+            box-shadow: 0 0 25px rgba(74, 144, 226, 0.7);
+        }
+
+        /* Quantum Field */
+        .quantum-field {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(74, 144, 226, 0.1), transparent);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #4a90e2;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #4a90e2;
+            animation: quantumFloat 5s ease-in-out infinite;
+        }
+
+        @keyframes quantumFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -30px) scale(1.2); }
+            50% { transform: translate(-30px, 40px) scale(0.8); }
+            75% { transform: translate(80px, 10px) scale(1.1); }
+        }
+
+        /* Back to home button */
+        .back-home {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.3), rgba(74, 144, 226, 0.1));
+            border: 2px solid #4a90e2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+            z-index: 1000;
+        }
+
+        .back-home:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+        }
+
+        .back-home svg {
+            width: 24px;
+            height: 24px;
+            fill: #4a90e2;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .lab-icon {
+                font-size: 2.5rem;
+            }
+
+            .page-subtitle {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+
+            .lab-container {
+                padding: 20px 20px 60px;
+            }
+
+            .experiment-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .experiment-card {
+                min-height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .lab-icon {
+                font-size: 2rem;
+            }
+
+            .page-subtitle {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="stars" id="stars"></div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-box">D6</div>
+            <div class="logo-text">District 6 Transportation</div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="tributes.html" class="nav-item">Tributes</a>
+            <a href="arena.html" class="nav-item">Arena</a>
+            <a href="leaderboard.html" class="nav-item">Leaderboard</a>
+            <a href="lab.html" class="nav-item active">Lab</a>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1 class="page-title">
+            <span class="lab-icon">🧪</span>
+            DISTRICT 6 LAB
+        </h1>
+        <p class="page-subtitle">Advanced Research & Development Facility</p>
+    </div>
+
+    <div class="lab-container">
+        <div class="experiment-grid">
+            <!-- DNA Helix Experiment -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">DNA Helix Scanner</h3>
+                <p class="experiment-description">Genetic sequencing visualization for tribute enhancement protocols</p>
+                <div class="dna-helix">
+                    <div class="dna-strand"></div>
+                    <div class="dna-strand"></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="toggleDNA()">Activate</button>
+                    <button class="lab-button" onclick="randomizeDNA()">Randomize</button>
+                </div>
+            </div>
+
+            <!-- Particle System -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">Quantum Particle Field</h3>
+                <p class="experiment-description">Subatomic particle manipulation for advanced weaponry research</p>
+                <div class="particle-system" id="particleSystem">
+                    <!-- Particles generated by JavaScript -->
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="toggleParticles()">Generate</button>
+                    <button class="lab-button" onclick="clearParticles()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Energy Core -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">Fusion Energy Core</h3>
+                <p class="experiment-description">Experimental power source for arena environmental controls</p>
+                <div class="energy-core" id="energyCore"></div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="chargeCore()">Charge</button>
+                    <button class="lab-button" onclick="overloadCore()">Overload</button>
+                </div>
+            </div>
+
+            <!-- Wave Generator -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">Sonic Wave Generator</h3>
+                <p class="experiment-description">Frequency manipulation for arena sound barrier systems</p>
+                <div class="wave-generator">
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="adjustFrequency('low')">Low Freq</button>
+                    <button class="lab-button" onclick="adjustFrequency('high')">High Freq</button>
+                </div>
+            </div>
+
+            <!-- Hologram Display -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">Holographic Interface</h3>
+                <p class="experiment-description">3D projection system for tribute training simulations</p>
+                <div class="hologram-display">
+                    <div class="hologram-text" id="hologramText">DISTRICT 6</div>
+                    <div class="hologram-lines"></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="changeHologram()">Change</button>
+                    <button class="lab-button" onclick="stabilizeHologram()">Stabilize</button>
+                </div>
+            </div>
+
+            <!-- Neural Network -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">Neural Network AI</h3>
+                <p class="experiment-description">Advanced AI processing for tribute behavior prediction</p>
+                <div class="neural-network" id="neuralNetwork">
+                    <!-- Neurons and synapses generated by JavaScript -->
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="trainNetwork()">Train</button>
+                    <button class="lab-button" onclick="resetNetwork()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Quantum Field -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">Quantum Field Manipulator</h3>
+                <p class="experiment-description">Reality distortion field for advanced arena hazards</p>
+                <div class="quantum-field" id="quantumField">
+                    <!-- Quantum particles generated by JavaScript -->
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="createQuantumField()">Create Field</button>
+                    <button class="lab-button" onclick="collapseField()">Collapse</button>
+                </div>
+            </div>
+
+            <!-- System Monitor -->
+            <div class="experiment-card">
+                <h3 class="experiment-title">System Monitor</h3>
+                <p class="experiment-description">Real-time monitoring of all lab systems and experiments</p>
+                <div id="systemMonitor" style="font-family: 'Orbitron', monospace; color: #4a90e2; font-size: 0.9rem; line-height: 1.6; text-align: left; padding: 20px;">
+                    <div>CPU: <span id="cpuUsage">45.2%</span></div>
+                    <div>MEMORY: <span id="memUsage">67.8%</span></div>
+                    <div>POWER: <span id="powerLevel">89.4%</span></div>
+                    <div>QUANTUM: <span id="quantumStability">92.1%</span></div>
+                    <div>NEURAL: <span id="neuralActivity">78.5%</span></div>
+                    <div>STATUS: <span id="systemStatus" style="color: #00ff41;">OPERATIONAL</span></div>
+                </div>
+                <div class="lab-controls">
+                    <button class="lab-button" onclick="runDiagnostics()">Diagnose</button>
+                    <button class="lab-button" onclick="emergencyShutdown()">Emergency</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-home" onclick="goHome()">
+        <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </div>
+
+    <script>
+        let experimentsActive = {
+            particles: false,
+            dna: true,
+            neural: false,
+            quantum: false
+        };
+
+        let hologramMessages = ['DISTRICT 6', 'TRIBUTE ANALYSIS', 'ARENA ONLINE', 'VICTORY PROTOCOL', 'SYSTEM ACTIVE'];
+        let currentHologram = 0;
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 150;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.
