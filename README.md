@@ -8,12 +8,11 @@ Your District has had two weeks to bond with each other and get to know each oth
 
 In this challenge, you and your District will be coding and creating your own interactive personal District website. Make a tribute homepage, add stats, progress in the arena, leaderboard takeovers, etc. Be creative with it (this challenge will be heavily weighted in creativity points!), and you are required to add at least 3 Easter eggs that connect or correlate in some way with the concept(s) you’ve learned during camp.
 
-Here is a decent example from 2023, for the House of Air. It doesn’t meet all of the criteria for this challenge, but it has a similar central idea. 
-
 # Website Requirements
 
-A creative homepage/landing
-Introduction and overview of all members of the team 
-3 Easter eggs related to scientific concepts learned during ScioCamp
-Escape room-esque elements
-A clear uniting theme
+- A creative homepage/landing
+- Introduction and overview of all members of the team 
+- 3 Easter eggs related to scientific concepts learned during camp
+- Escape room-esque elements
+- A clear, uniting theme
+
